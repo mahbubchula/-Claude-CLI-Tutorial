@@ -3,108 +3,164 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Claude CLI Interactive Tutorial</title>
+    <title>Claude CLI Installation Guide</title>
     <style>
         body {
             background-color: #1a1a1a;
             color: #e0e0e0;
-            font-family: 'Courier New', Courier, monospace;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
+            padding: 0;
+            margin: 0;
+        }
+        #container {
+            width: 100%;
+            max-width: 900px;
             padding: 20px;
         }
-        #terminal {
+        h1 { color: #ff69b4; text-align: center; font-size: 2.5em; margin-bottom: 10px; }
+        p.subtitle { text-align: center; color: #aaa; margin-bottom: 40px; }
+        .step-card {
+            background-color: #252525;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border-left: 5px solid #ff69b4;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        h2 { color: #fff; margin-top: 0; }
+        .code-block {
             background-color: #000;
-            width: 100%;
-            max-width: 800px;
-            height: 450px;
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            overflow-y: auto;
+            color: #00ff00;
+            font-family: 'Courier New', Courier, monospace;
+            padding: 15px;
+            border-radius: 6px;
+            position: relative;
+            margin: 15px 0;
             border: 1px solid #333;
         }
-        .output { margin-bottom: 10px; line-height: 1.4; }
-        .command { color: #00ff00; }
-        .hint { color: #888; font-style: italic; }
-        .input-line { display: flex; align-items: center; }
-        .prompt { color: #00ff00; margin-right: 10px; }
+        .copy-btn {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            background: #333;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+        .copy-btn:hover { background: #555; }
+        #terminal-demo {
+            background-color: #000;
+            border-radius: 8px;
+            padding: 20px;
+            height: 300px;
+            overflow-y: auto;
+            border: 1px solid #333;
+            font-family: 'Courier New', Courier, monospace;
+            margin-top: 20px;
+        }
+        .output { margin-bottom: 5px; }
+        .prompt { color: #ff69b4; font-weight: bold; }
+        .input-area { display: flex; }
         input {
             background: transparent;
             border: none;
             color: #fff;
-            font-family: inherit;
-            font-size: inherit;
-            outline: none;
             flex-grow: 1;
+            outline: none;
+            font-family: inherit;
         }
-        #header { text-align: center; margin-bottom: 20px; }
-        h1 { color: #ff69b4; margin-bottom: 5px; }
     </style>
 </head>
 <body>
-    <div id="header">
-        <h1>Claude CLI Tutorial</h1>
-        <p>Type the commands to learn how to use the Claude CLI!</p>
-    </div>
-    <div id="terminal">
-        <div id="history">
-            <div class="output">Welcome to the interactive Claude CLI tutorial.</div>
-            <div class="output hint">Objective: Start by typing 'claude' to see available commands.</div>
+    <div id="container">
+        <h1>?? Claude CLI Student Guide</h1>
+        <p class="subtitle">Complete guide to installing and using the Claude AI assistant in your terminal.</p>
+        <div class="step-card">
+            <h2>Step 1: Install Node.js</h2>
+            <p>The Claude CLI requires Node.js. Check if you have it installed:</p>
+            <div class="code-block">
+                node --version
+                <button class="copy-btn" onclick="copyText('node --version')">Copy</button>
+            </div>
+            <p>If you see an error, download it from <a href="https://nodejs.org/" target="_blank" style="color:#ff69b4">nodejs.org</a>.</p>
         </div>
-        <div class="input-line">
-            <span class="prompt">mahbub@chula:~$</span>
-            <input type="text" id="commandInput" autofocus autocomplete="off">
+        <div class="step-card">
+            <h2>Step 2: Install Claude CLI</h2>
+            <p>Run this command to install Claude globally on your system:</p>
+            <div class="code-block">
+                npm install -g @anthropic-ai/claude-cli
+                <button class="copy-btn" onclick="copyText('npm install -g @anthropic-ai/claude-cli')">Copy</button>
+            </div>
+        </div>
+        <div class="step-card">
+            <h2>Step 3: Login & Chat</h2>
+            <p>Once installed, you can start talking to Claude immediately!</p>
+            <div class="code-block">
+                claude
+                <button class="copy-btn" onclick="copyText('claude')">Copy</button>
+            </div>
+        </div>
+        <div class="step-card">
+            <h2>?? Interactive Practice</h2>
+            <p>Try the commands right here in this simulator before you use your real terminal!</p>
+            <div id="terminal-demo">
+                <div id="history">
+                    <div class="output">Welcome to the Student Practice Terminal.</div>
+                    <div class="output" style="color:#888">Type 'npm install -g @anthropic-ai/claude-cli' to start.</div>
+                </div>
+                <div class="input-area">
+                    <span class="prompt">student@chula:~$</span>
+                    <input type="text" id="commandInput" autofocus autocomplete="off">
+                </div>
+            </div>
         </div>
     </div>
     <script>
+        function copyText(text) {
+            navigator.clipboard.writeText(text);
+            alert("Copied: " + text);
+        }
         const input = document.getElementById('commandInput');
         const history = document.getElementById('history');
-        const terminal = document.getElementById('terminal');
+        const terminal = document.getElementById('terminal-demo');
         let step = 0;
         input.addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
-                const cmd = input.value.trim().toLowerCase();
+                const cmd = input.value.trim();
                 processCommand(cmd);
                 input.value = '';
                 terminal.scrollTop = terminal.scrollHeight;
             }
         });
-        function addLine(text, className = 'output') {
+        function addLine(text) {
             const div = document.createElement('div');
-            div.className = className;
+            div.className = 'output';
             div.innerHTML = text;
             history.appendChild(div);
         }
         function processCommand(cmd) {
-            addLine('<span class="prompt">mahbub@chula:~$</span> ' + cmd);
+            addLine('<span class="prompt">student@chula:~$</span> ' + cmd);
             if (step === 0) {
-                if (cmd === 'claude') {
-                    addLine("Claude CLI v1.0.0 initialized...");
-                    addLine("Usage: claude [command] [options]");
-                    addLine("<br>Available Commands:");
-                    addLine("- chat : Start a conversation");
-                    addLine("- config : Set your API keys");
-                    addLine("- help : Show this help menu");
-                    addLine("<br><span class='hint'>Next Step: Type 'claude config' to set up your account.</span>");
+                if (cmd.includes('npm install')) {
+                    addLine("added 1 package in 2s");
+                    addLine("found 0 vulnerabilities");
+                    addLine("<span style='color:#00ff00'>? Success! Claude CLI installed.</span>");
+                    addLine("<br>Now type <b>claude</b> to login:");
                     step = 1;
-                } else { addLine("Command not found. Try typing 'claude'.", "command"); }
+                } else { addLine("Error: Please type the install command first."); }
             } else if (step === 1) {
-                if (cmd === 'claude config') {
-                    addLine("Configuration Menu:");
-                    addLine("Enter your Anthropic API Key: ****************");
-                    addLine("Success! Config saved to ~/.claude/config.json");
-                    addLine("<br><span class='hint'>Final Step: Type 'claude chat' to start talking to the AI!</span>");
+                if (cmd === 'claude') {
+                    addLine("Welcome to Claude CLI!");
+                    addLine("To get started, please login via your browser...");
+                    addLine("<span style='color:#ff69b4'>Claude:</span> Hello! I am successfully installed. How can I help you with your studies?");
                     step = 2;
-                } else { addLine("Invalid command. Please type 'claude config'."); }
-            } else if (step === 2) {
-                if (cmd === 'claude chat') {
-                    addLine("Connecting to Claude-3-Sonnet...");
-                    addLine("<span style='color:#ff69b4'>Claude:</span> Hello Mahbub! I am ready to help you with your research at Chula. What shall we do today?");
-                    addLine("<br>?? <b>Tutorial Complete!</b> You are now a Claude CLI expert.");
-                    step = 3;
-                } else { addLine("Type 'claude chat' to finish the tutorial."); }
+                } else { addLine("Type 'claude' to launch the app."); }
             }
         }
     </script>
